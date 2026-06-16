@@ -1,0 +1,111 @@
+@if (tratamento(); as t) {
+  <div class="tratamento-page">
+
+    <!-- Header ─────────────────────────────── -->
+    <header class="page-header">
+      <button class="back-btn" (click)="voltar()" aria-label="Voltar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>
+        </svg>
+      </button>
+      <div>
+        <h1 class="page-title">Tratamento</h1>
+        <p class="page-subtitle">Acompanhamento das etapas</p>
+      </div>
+      <span class="status-chip status-chip--{{ t.status }}">
+        {{ t.status === 'concluido' ? 'Concluído' : 'Em andamento' }}
+      </span>
+    </header>
+
+    <!-- Disease card ────────────────────────── -->
+    <div class="disease-card">
+      <div class="disease-card__top">
+        <div>
+          <p class="disease-card__label">Diagnóstico</p>
+          <h2 class="disease-card__name">{{ doencaInfo().nome }}</h2>
+        </div>
+        <span class="severity-badge severity-badge--{{ severidadeConfig().cor }}">
+          {{ severidadeConfig().label }}
+        </span>
+      </div>
+      <div class="disease-card__meta">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+        </svg>
+        Iniciado em {{ formatarData(t.iniciadoEm) }}
+      </div>
+    </div>
+
+    <!-- Progress ─────────────────────────────── -->
+    <div class="progress-card">
+      <div class="progress-card__header">
+        <span class="progress-card__label">Progresso</span>
+        <span class="progress-card__pct">{{ progresso() }}%</span>
+      </div>
+      <div class="progress-bar" role="progressbar" [attr.aria-valuenow]="progresso()">
+        <div class="progress-bar__fill" [style.width.%]="progresso()"></div>
+      </div>
+      <p class="progress-card__sub">
+        {{ t.etapas.filter(e => e.status === 'concluida').length }} de {{ t.etapas.length }} etapas concluídas
+      </p>
+    </div>
+
+    <!-- Steps ───────────────────────────────── -->
+    <div class="steps">
+      <h3 class="steps__title">Plano de Tratamento</h3>
+
+      <ul class="step-list">
+        @for (etapa of t.etapas; track $index; let last = $last) {
+          <li class="step-item step-item--{{ etapa.status }}">
+            <div class="step-item__track">
+              <div class="step-item__dot">
+                @if (etapa.status === 'concluida') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6 9 17l-5-5"/>
+                  </svg>
+                }
+              </div>
+              @if (!last) {
+                <div class="step-item__line"></div>
+              }
+            </div>
+
+            <div class="step-item__content">
+              <p class="step-item__desc">{{ etapa.description }}</p>
+              @if (etapa.status === 'em_andamento') {
+                <button class="btn-step-done" (click)="concluirEtapa($index)">
+                  Marcar como concluída
+                </button>
+              }
+              @if (etapa.status === 'concluida') {
+                <span class="step-item__done-label">Concluída</span>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <!-- Completed state ─────────────────────── -->
+    @if (t.status === 'concluido') {
+      <div class="complete-card">
+        <div class="complete-card__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <path d="m9 11 3 3L22 4"/>
+          </svg>
+        </div>
+        <h3 class="complete-card__title">Tratamento concluído!</h3>
+        <p class="complete-card__text">
+          Realize uma nova análise para confirmar que a doença foi controlada.
+        </p>
+      </div>
+      <button class="btn-primary" (click)="novaAnalise()">Fazer nova análise</button>
+    }
+
+  </div>
+}

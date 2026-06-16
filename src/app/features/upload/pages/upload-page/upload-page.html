@@ -1,0 +1,92 @@
+<div class="upload-page">
+
+  <!-- Header ────────────────────────────── -->
+  <header class="page-header">
+    <div class="icon-badge icon-badge--primary">
+      <img src="assets/cerrado_icon.png" alt="Cerrado Scan" class="icon-badge__img" />
+    </div>
+    <div>
+      <h1 class="page-title">Cerrado Scan</h1>
+      <p class="page-subtitle">Diagnóstico de doenças no café</p>
+    </div>
+  </header>
+
+  <!-- Scan mode ──────────────────────────── -->
+  <section class="scan-section">
+    <h2 class="section-label">Como deseja escanear?</h2>
+    <div class="scan-grid">
+
+      <button class="scan-card" (click)="onTakePhoto()" [disabled]="status() === 'enviando'">
+        <div class="scan-card__icon scan-card__icon--primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+            <circle cx="12" cy="13" r="3"/>
+          </svg>
+        </div>
+        <div>
+          <div class="scan-card__title">Tirar foto</div>
+          <div class="scan-card__sub">Usar a câmera</div>
+        </div>
+      </button>
+
+      <button class="scan-card" (click)="fileInput.click()" [disabled]="status() === 'enviando'">
+        <div class="scan-card__icon scan-card__icon--accent">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"/>
+            <line x1="16" x2="22" y1="5" y2="5"/>
+            <line x1="19" x2="19" y1="2" y2="8"/>
+            <circle cx="9" cy="9" r="2"/>
+            <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+          </svg>
+        </div>
+        <div>
+          <div class="scan-card__title">Carregar fotos</div>
+          <div class="scan-card__sub">Da galeria</div>
+        </div>
+      </button>
+
+    </div>
+
+    <input
+      #fileInput
+      type="file"
+      accept="image/*"
+      multiple
+      style="display:none"
+      (change)="onFileSelected(fileInput)"
+    />
+  </section>
+
+  <!-- Images section ─────────────────────── -->
+  <section class="images-section">
+    <div class="images-header">
+      <h2 class="section-label">Imagens selecionadas</h2>
+      @if (selectedFiles().length > 0) {
+        <span class="count-chip">{{ selectedFiles().length }}</span>
+      }
+    </div>
+    <app-upload-preview
+      [files]="selectedFiles()"
+      (removeFile)="onRemoveFile($event)"
+    />
+  </section>
+
+  <!-- Error ──────────────────────────────── -->
+  @if (status() === 'erro') {
+    <div class="error-msg">⚠️ {{ erroMsg() }}</div>
+  }
+
+  <!-- Submit ─────────────────────────────── -->
+  <div class="sticky-footer">
+    <button class="btn-primary" (click)="onEnviar()" [disabled]="!podeEnviar">
+      @if (status() === 'enviando') {
+        <span class="spinner"></span> Analisando...
+      } @else {
+        Iniciar Análise{{ selectedFiles().length > 0 ? ' (' + selectedFiles().length + ')' : '' }}
+      }
+    </button>
+  </div>
+
+</div>

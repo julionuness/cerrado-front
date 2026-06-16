@@ -1,0 +1,85 @@
+<div class="tratamentos-page">
+
+  <!-- Header ─────────────────────────────── -->
+  <header class="page-header">
+    <div class="icon-badge">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/>
+        <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+      </svg>
+    </div>
+    <div>
+      <h1 class="page-title">Tratamentos</h1>
+      <p class="page-subtitle">
+        {{ tratamentos().length }}
+        {{ tratamentos().length === 1 ? 'tratamento' : 'tratamentos' }}
+      </p>
+    </div>
+  </header>
+
+  <!-- Loading ─────────────────────────────── -->
+  @if (carregando()) {
+    <div class="loading-state">
+      <div class="spinner spinner--dark"></div>
+    </div>
+  }
+
+  <!-- Empty state ─────────────────────────── -->
+  @if (!carregando() && tratamentos().length === 0) {
+    <div class="empty-state">
+      <div class="empty-state__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/>
+          <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+        </svg>
+      </div>
+      <p class="empty-state__text">Nenhum tratamento iniciado ainda.</p>
+      <button class="btn-primary" (click)="novaAnalise()">Fazer uma análise</button>
+    </div>
+  }
+
+  <!-- List ────────────────────────────────── -->
+  @if (!carregando() && tratamentos().length > 0) {
+    <ul class="trat-list">
+      @for (t of tratamentos(); track t.id) {
+        <li class="trat-card" (click)="verTratamento(t.id)">
+
+          <div class="trat-card__top">
+            <div class="trat-card__info">
+              <h2 class="trat-card__name">{{ getDoencaInfo(t.doenca).nome }}</h2>
+              <p class="trat-card__date">{{ formatarData(t.iniciadoEm) }}</p>
+            </div>
+            <div class="trat-card__badges">
+              <span class="severity-badge severity-badge--{{ getSeveridadeConfig(t.severidade).cor }}">
+                {{ getSeveridadeConfig(t.severidade).label }}
+              </span>
+              <span class="status-chip status-chip--{{ t.status }}">
+                {{ t.status === 'concluido' ? 'Concluído' : 'Em andamento' }}
+              </span>
+            </div>
+          </div>
+
+          <div class="trat-card__progress">
+            <div class="trat-card__progress-bar">
+              <div class="trat-card__progress-fill" [style.width.%]="progresso(t)"></div>
+            </div>
+            <span class="trat-card__progress-label">
+              {{ t.etapas.filter(e => e.status === 'concluida').length }} / {{ t.etapas.length }} etapas
+            </span>
+          </div>
+
+          <div class="trat-card__arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+            </svg>
+          </div>
+
+        </li>
+      }
+    </ul>
+  }
+
+</div>

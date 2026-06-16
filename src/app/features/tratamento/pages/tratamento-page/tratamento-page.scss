@@ -1,0 +1,312 @@
+.tratamento-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem 1.25rem 2rem;
+}
+
+/* ── Header ─────────────────────────────── */
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  color: var(--foreground);
+  flex-shrink: 0;
+  transition: background-color 0.15s;
+  &:active { background-color: var(--muted); }
+}
+
+.page-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.page-subtitle {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  font-family: 'Inter', sans-serif;
+}
+
+.status-chip {
+  margin-left: auto;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+
+  &--em_andamento {
+    background: oklch(0.92 0.07 95);
+    color: oklch(0.45 0.14 80);
+  }
+
+  &--concluido {
+    background: oklch(0.92 0.07 145);
+    color: var(--primary);
+  }
+}
+
+/* ── Disease card ────────────────────────── */
+.disease-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2xl);
+  padding: 1rem 1.125rem;
+
+  &__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.625rem;
+  }
+
+  &__label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted-foreground);
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 0.125rem;
+  }
+
+  &__name {
+    font-size: 1.375rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--foreground);
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.8125rem;
+    color: var(--muted-foreground);
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+/* ── Progress ─────────────────────────────── */
+.progress-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2xl);
+  padding: 1rem 1.125rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.625rem;
+  }
+
+  &__label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted-foreground);
+    font-family: 'Inter', sans-serif;
+  }
+
+  &__pct {
+    font-size: 0.9375rem;
+    font-weight: 800;
+    color: var(--primary);
+  }
+
+  &__sub {
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--muted-foreground);
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+.progress-bar {
+  height: 0.5rem;
+  background: var(--muted);
+  border-radius: 9999px;
+  overflow: hidden;
+
+  &__fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 9999px;
+    transition: width 0.4s ease;
+  }
+}
+
+/* ── Steps ───────────────────────────────── */
+.steps {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2xl);
+  padding: 1rem 1.125rem 1.25rem;
+
+  &__title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--foreground);
+    margin-bottom: 1.25rem;
+  }
+}
+
+.step-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.step-item {
+  display: flex;
+  gap: 0.875rem;
+
+  &__track {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  &__dot {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+
+  &__line {
+    flex: 1;
+    width: 2px;
+    min-height: 1rem;
+    margin: 0.25rem 0;
+    background: var(--border);
+    border-radius: 1px;
+  }
+
+  &__content {
+    padding-bottom: 1.25rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__desc {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    font-family: 'Inter', sans-serif;
+    padding-top: 0.125rem;
+  }
+
+  &__done-label {
+    display: inline-block;
+    margin-top: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--primary);
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ── Variantes por status ── */
+  &--concluida {
+    .step-item__dot {
+      background: var(--primary);
+      color: #fff;
+    }
+    .step-item__line { background: var(--primary); }
+    .step-item__desc { color: var(--muted-foreground); }
+  }
+
+  &--em_andamento {
+    .step-item__dot {
+      background: oklch(0.92 0.07 145);
+      border: 2.5px solid var(--primary);
+    }
+    .step-item__desc { color: var(--foreground); font-weight: 500; }
+  }
+
+  &--pendente {
+    .step-item__dot {
+      background: var(--muted);
+      border: 2px solid var(--border);
+    }
+    .step-item__desc { color: var(--muted-foreground); }
+  }
+}
+
+.btn-step-done {
+  margin-top: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.875rem;
+  border: 1.5px solid var(--primary);
+  border-radius: var(--radius-lg);
+  background: transparent;
+  color: var(--primary);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  transition: background-color 0.15s, transform 0.1s;
+
+  &:active {
+    background: oklch(0.92 0.07 145);
+    transform: scale(0.97);
+  }
+}
+
+/* ── Complete card ───────────────────────── */
+.complete-card {
+  background: oklch(0.97 0.04 145);
+  border: 1px solid oklch(0.86 0.07 145);
+  border-radius: var(--radius-2xl);
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+
+  &__icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.25rem;
+  }
+
+  &__title {
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: var(--foreground);
+  }
+
+  &__text {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--muted-foreground);
+    font-family: 'Inter', sans-serif;
+  }
+}

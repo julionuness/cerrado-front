@@ -1,0 +1,25 @@
+@if (previews().length === 0) {
+  <div class="empty-state">
+    <img src="assets/cerrado_icon.png" alt="Cerrado Scan" class="empty-icon" />
+    <p class="empty-text">
+      Nenhuma imagem ainda.<br>
+      Adicione fotos para iniciar a análise.
+    </p>
+  </div>
+}
+
+@if (previews().length > 0) {
+  <div class="preview-grid">
+    @for (item of previews(); track item.file.name; let i = $index) {
+      <div class="preview-item">
+        <img [src]="item.url" [alt]="item.file.name" />
+        <button class="btn-remove" (click)="onRemove(i)" aria-label="Remover imagem">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+          </svg>
+        </button>
+      </div>
+    }
+  </div>
+}

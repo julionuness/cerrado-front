@@ -1,0 +1,111 @@
+<div class="historico-page">
+
+  <!-- Header ─────────────────────────────── -->
+  <header class="page-header">
+    <div class="icon-badge icon-badge--secondary">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+        <path d="M3 3v5h5"/>
+        <path d="M12 7v5l4 2"/>
+      </svg>
+    </div>
+    <div>
+      <h1 class="page-title">Histórico</h1>
+      <p class="page-subtitle">
+        {{ historico().length }}
+        {{ historico().length === 1 ? 'análise' : 'análises' }}
+      </p>
+    </div>
+  </header>
+
+  <!-- Empty state ────────────────────────── -->
+  @if (historico().length === 0) {
+    <div class="empty-state">
+      <img src="assets/cerrado_icon.png" alt="Cerrado Scan" class="empty-icon" />
+      <p class="empty-text">Você ainda não fez nenhuma análise.</p>
+      <button class="btn-primary" (click)="novaAnalise()">Fazer primeira análise</button>
+    </div>
+  }
+
+  <!-- History list ───────────────────────── -->
+  @if (historico().length > 0) {
+    <ul class="hist-list">
+      @for (item of historico(); track item.id) {
+        <li class="hist-card" [class.hist-card--open]="expandido() === item.id">
+
+          <!-- Row header ──────────────────── -->
+          <button class="hist-card__row" (click)="toggleExpandido(item.id)">
+            <div class="hist-card__thumb">
+              <img src="assets/cerrado_icon.png" alt="" class="hist-card__thumb-icon" />
+            </div>
+            <div class="hist-card__info">
+              <div class="hist-card__title">{{ item.resumo }}</div>
+              <div class="hist-card__date">{{ formatarData(item.criadoEm) }}</div>
+            </div>
+            <div class="hist-card__chevron" [class.hist-card__chevron--open]="expandido() === item.id">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m6 9 6 6 6-6"/>
+              </svg>
+            </div>
+          </button>
+
+          <!-- Expanded body ─────────────── -->
+          @if (expandido() === item.id) {
+            <div class="hist-card__body">
+
+              @for (r of item.resultados; track r.filename) {
+                <div class="result-row">
+                  <div class="result-row__top">
+                    <span class="result-row__file">{{ r.filename }}</span>
+                    <span class="result-row__conf" [class]="'result-row__conf--' + getConfiancaConfig(r.confianca).cor">
+                      {{ (r.confianca * 100).toFixed(0) }}%
+                    </span>
+                  </div>
+                  <div class="result-row__bottom">
+                    <span class="result-row__disease">{{ getDoencaInfo(r.doenca).nome }}</span>
+                    <div class="result-row__badges">
+                      <span class="mini-badge mini-badge--{{ getSeveridadeConfig(r.severidade).cor }}">
+                        {{ getSeveridadeConfig(r.severidade).label }}
+                      </span>
+                      <span class="mini-badge mini-badge--area">{{ r.area_percentual }}%</span>
+                    </div>
+                  </div>
+                </div>
+                @if (!$last) { <div class="divider"></div> }
+              }
+
+              <!-- Actions ─────────────────── -->
+              <div class="hist-card__actions">
+                <button class="btn-outline" (click)="verResultado(item)">Ver detalhes</button>
+                <button class="btn-danger" (click)="remover(item.id)">Remover</button>
+              </div>
+
+            </div>
+          }
+
+        </li>
+      }
+    </ul>
+
+    <!-- Footer ───────────────────────────── -->
+    <div class="hist-footer">
+      @if (!confirmandoLimpar()) {
+        <button class="btn-ghost-danger" (click)="limparTudo()">Limpar histórico</button>
+      } @else {
+        <div class="confirm-box">
+          <p class="confirm-box__text">Tem certeza? Esta ação não pode ser desfeita.</p>
+          <div class="confirm-box__btns">
+            <button class="btn-danger" (click)="limparTudo()">Confirmar</button>
+            <button class="btn-outline" (click)="cancelarLimpar()">Cancelar</button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <button class="btn-primary" (click)="novaAnalise()">Nova Análise</button>
+
+  }
+
+</div>
